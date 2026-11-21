@@ -1,0 +1,12 @@
+# هیچ‌وقت کامیت نشود (ریپو عمومی است!)
+bot_data.db*
+.bot_token
+.owner_id
+bot.log
+backups/
+venv/
+__pycache__/
+*.pyc
+*.lock
+node_modules/
+.wrangler/
