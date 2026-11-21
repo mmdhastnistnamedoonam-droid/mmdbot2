@@ -1,0 +1,35 @@
+name: bot
+
+# این ورک‌فلو را ورکرِ کلودفلر (پوشهٔ launcher) هر چند دقیقه چک می‌کند و اگه ربات
+# خاموش بود روشنش می‌کند. دستی هم می‌شود: Actions ← bot ← Run workflow.
+on:
+  workflow_dispatch:
+
+# هم‌زمان فقط یک نمونه (تلگرام دو polling روی یک توکن را قبول نمی‌کند).
+# نوبتِ بعدی منتظر می‌ماند تا نوبتِ فعلی تمام شود؛ هیچ‌وقت وسطِ کار کنسل نمی‌شود.
+concurrency:
+  group: telegram-bot
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    env:
+      BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+      OWNER_ID: ${{ secrets.OWNER_ID }}
+      CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CF_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      DEBUG_LOGS: ${{ vars.DEBUG_LOGS }}
+      RUN_MINUTES: "340"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python ops/gh_runner.py
