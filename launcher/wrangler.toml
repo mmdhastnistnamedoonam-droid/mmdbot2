@@ -1,0 +1,14 @@
+name = "mmd-bot-launcher"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+
+# فقط Cron دارد؛ آدرسِ عمومی لازم نیست
+workers_dev = false
+preview_urls = false
+
+[triggers]
+crons = ["*/5 * * * *"]        # هر ۵ دقیقه (پلنِ رایگان Cron را پشتیبانی می‌کند)
+
+[vars]
+WORKFLOW_FILE = "bot.yml"
+HANDOFF_MINUTES = "300"        # از دقیقهٔ ۳۰۰ِ هر نوبت، نوبتِ بعدی را از قبل در صف می‌گذارد
